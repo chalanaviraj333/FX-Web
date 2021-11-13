@@ -1,0 +1,7 @@
+{
+  "name": "fxweb",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
