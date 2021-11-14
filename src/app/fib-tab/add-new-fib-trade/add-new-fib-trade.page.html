@@ -1,0 +1,157 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title color="primary" class="fontClass">ADD NEW FIBONACCI TRADE</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmitNext(f)">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label position="stacked" class="fontClass">Forex Pair</ion-label>
+            <ion-input class="fontClass" type="text" (ionChange)="_forexPairOnType($event)" [ngModel]="selectedCurrencyPair" name="forexPair" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="2" offset="1">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Time Frame</ion-label>
+            <ion-select value=15 class="fontClass" type="number" okText="Okay" cancelText="Dismiss" ngModel name="timeFrame" required>
+              <ion-select-option value=5>5 Min</ion-select-option>
+              <ion-select-option value=15>15 Min</ion-select-option>
+              <ion-select-option value=60>1 Hr</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="2">
+          <ion-list *ngFor="let currencyPair of filteredCurrencyPairs" (click)="onClick(currencyPair)">
+            <ion-item>
+              <ion-label class="fontClass">{{currencyPair}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col size="4">
+
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Highest Candle Movement</ion-label>
+            <ion-input class="fontClass" type="number" ngModel name="highestCandleMovement" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Total Candle Movement</ion-label>
+            <ion-input class="fontClass" type="number" ngModel name="totalCandleMovement" required></ion-input>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Result in Trade</ion-label>
+            <ion-select value="won" type="text" okText="Okay" cancelText="Dismiss" ngModel name="resultinTrade" required>
+              <ion-select-option value="won">WON</ion-select-option>
+              <ion-select-option value="loss">LOSS</ion-select-option>
+              <ion-select-option value="closed">CLOSED</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Trade Gain</ion-label>
+            <ion-input type="number" class="fontClass" ngModel name="tradeGain" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Trade Direction</ion-label>
+            <ion-input class="fontClass" type="text" ngModel name="tradeDirection" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top">
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Moment Start Date/Time</ion-label>
+            <ion-datetime ngModel name="momentStartDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Start to 0 Hit</ion-label>
+            <ion-datetime class="fontClass" displayFormat="D MMM YYYY H:mm" min="2021" ngModel name="starttoZeroHit"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Month Week</ion-label>
+            <ion-input type="number" class="fontClass" ngModel name="monthWeek" required></ion-input>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="ion-margin-top">
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Trade Start Date/Time</ion-label>
+            <ion-datetime ngModel name="tradeStartDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+          </ion-item>
+        </ion-col>
+
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Trade Finished Date/Time</ion-label>
+            <ion-datetime ngModel name="tradeFinishedDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Notes</ion-label>
+            <ion-textarea type="text" ngModel name="notes" rows="5" type="text" cols="20" class="fontClass"></ion-textarea>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">News</ion-label>
+            <ion-textarea type="text" ngModel name="news" rows="5" type="text" cols="20" class="fontClass"></ion-textarea>
+          </ion-item>
+        </ion-col>
+        <ion-col size="1" class="ion-align-self-center ion-text-end">
+          <ion-button (click)="commonUploadService.addNewToGallery()" [disabled]="commonUploadService.uploadphotobutton">
+            <ion-icon slot="icon-only" name="camera-outline"></ion-icon>
+          </ion-button>
+        </ion-col>
+        <ion-col size="4" *ngFor="let photo of commonUploadService.photos; index as position">
+          <ion-img [src]="photo.webviewPath" (click)="showActionSheet(photo, position)" class="uploadimageClass"></ion-img>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="start" color="danger" class="ion-button-class fontClass" (click)="onClickDatabaseChanges()">
+      <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      DATABASE CHANGES
+    </ion-button>
+    <ion-button slot="end" color="success" class="ion-button-class fontClass" [disabled]="!f.valid" (click)="f.ngSubmit.emit()">
+      <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+      SAVE AND UPLOAD
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

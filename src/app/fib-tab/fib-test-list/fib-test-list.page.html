@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title class="fontClass">Fibonacci Testimonial</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let fibTrade of commonHttpService.filteredFibTrades"
+    class="ion-activatable ripple-parent ion-no-margin">
+      <ion-card-content>
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+          <ion-col size-xs="12" size-sm="12" size-md="3" size-lg="3" class="ion-no-margin">
+            <ion-item lines="none">
+              <ion-label>
+                <ion-label class="fontClass"><span style="font-weight: bold;">{{fibTrade.pair}}</span> | {{fibTrade.momentStartDateTime.toLocaleDateString('en-US', dayOptions)}}</ion-label>
+                <ion-label class="fontClass dateClass ion-text-wrap"><span class="weekClass">Week {{fibTrade.week}}</span> | {{fibTrade.momentStartDateTime.toLocaleDateString('en-US', options)}}</ion-label>
+              </ion-label>
+              <ion-badge slot="end" [color]="fibTrade.result">{{fibTrade.gain}} Gain</ion-badge>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-sm="12" size-md="3" size-lg="3" class="ion-no-margin" offset-md="1" offset-lg="1">
+              <ion-label class="fontClass" position="stacked">Candle Momentum</ion-label>
+              <ion-progress-bar [color]="fibTrade.tradeDirection" [value]="fibTrade.highestCandle/fibTrade.totalCandle"></ion-progress-bar>
+            <ion-item lines="none">
+              <ion-label class="fontClass candleData ion-text-start">Highest: {{fibTrade.highestCandle}}</ion-label>
+              <ion-label class="fontClass candleData ion-text-end">Total: {{fibTrade.totalCandle}}</ion-label>
+            </ion-item>
+          </ion-col>
+          <ion-col size-xs="12" size-sm="12" size-md="3" size-lg="3" class="ion-no-margin" offset-md="1" offset-lg="1">
+            <ion-label class="fontClass" position="stacked">Duration</ion-label>
+            <ion-progress-bar color="dark" [value]="(fibTrade.tradeFinishedDateTime.getTime() - fibTrade.tradeStartDateTime.getTime())/(fibTrade.tradeFinishedDateTime.getTime() - fibTrade.momentStartDateTime.getTime())"></ion-progress-bar>
+          <ion-item lines="none">
+            <ion-label class="fontClass candleData ion-text-start">
+              <ion-text>Trade: {{fibTrade.totalTradeDuration}}</ion-text>
+              <br>
+              <ion-text color="danger">{{fibTrade.starttoZeroHitDuration}}</ion-text>
+            </ion-label>
+            <ion-label class="fontClass candleData ion-text-end ion-align-self-start">Momentum: {{fibTrade.totalMomentumDuration}}</ion-label>
+          </ion-item>
+        </ion-col>
+          </ion-row>
+          <ion-row class="ion-no-padding">
+            <ion-col size="3" class="ion-text-end ion-no-margin" offset="9">
+              <ion-button *ngIf="!fibTrade.clicktoview" fill="clear"  (click)="onClickViewMore(fibTrade)">
+                <ion-icon slot="icon-only" name="chevron-down-outline"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+      </ion-card-content>
+      <ion-card-content *ngIf="fibTrade.clicktoview">
+        <ion-grid class="ion-no-padding">
+          <ion-row class="ion-no-padding">
+          <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4" class="ion-no-margin">
+            <ion-card>
+              <ion-card-header class="fontClass boldTextClass">Candle Momentum</ion-card-header>
+              <ion-card-content>
+                <ion-label class="fontClass">Date: {{fibTrade.momentStartDateTime.toLocaleDateString('en-US', fullLengthDate)}}</ion-label>
+                <br>
+                <ion-label class="fontClass">Time: {{fibTrade.momentStartDateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}}</ion-label>
+                <br>
+                <ion-label class="fontClass">1 to 0 Duration: {{fibTrade.starttoZeroHitDuration}}</ion-label>
+                <br>
+                <ion-label class="fontClass">News: {{fibTrade.news}}</ion-label>
+                <br>
+                <ion-label class="fontClass">Comments: {{fibTrade.comments}}</ion-label>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4" class="ion-no-margin">
+            <ion-card>
+              <ion-card-header class="fontClass boldTextClass">Trade Details</ion-card-header>
+              <ion-card-content>
+                <ion-label class="fontClass">Date: {{fibTrade.tradeStartDateTime.toLocaleDateString('en-US', fullLengthDate)}}</ion-label>
+                <br>
+                <ion-label class="fontClass">Time: {{fibTrade.tradeStartDateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}}</ion-label>
+                <br>
+                <ion-label class="fontClass">Time Frame: {{fibTrade.timeFrame}}</ion-label>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col size-xs="12" size-sm="12" size-md="4" size-lg="4" class="ion-no-margin imageColClass">
+            <img src="{{fibTrade.image}}" />
+        </ion-col>
+          </ion-row>
+        <ion-row class="ion-no-padding">
+          <ion-col size="3" class="ion-text-end ion-no-margin" offset="9">
+            <ion-button *ngIf="fibTrade.clicktoview" fill="clear"  (click)="onClickViewMore(fibTrade)">
+              <ion-icon slot="icon-only" name="chevron-up-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+</ion-content>
