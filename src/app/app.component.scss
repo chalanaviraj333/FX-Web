@@ -117,3 +117,13 @@ ion-note {
 ion-item.selected {
   --color: var(--ion-color-primary);
 }
+
+.fontClass {
+  font-family: obliqua,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+ion-list-header {
+  cursor: pointer;
+}

@@ -1,0 +1,71 @@
+<ion-buttons slot="start">
+  <ion-button class="closeButtonClass" (click)="_onClickDismiss()">
+    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+  </ion-button>
+</ion-buttons>
+
+<ion-content>
+  <ion-item lines="none">
+    <ion-label class="ion-text-wrap">
+      <ion-label id="filterbyID"> -Currency Pair- </ion-label>
+    </ion-label>
+    <ion-button
+      class="fontClass"
+      fill="outline"
+      slot="end"
+      (click)="onClickClear('currencyPair')"
+      >Clear</ion-button
+    >
+  </ion-item>
+
+  <ion-segment
+    [value]="commonHttpService.selectedFilterData.selectedCurrencyPair"
+    (ionChange)="onSelectCurrencyPair($event)"
+    class="segmentButtonClass"
+    scrollable
+  >
+    <ion-segment-button
+      class="ion-text-center extendedwidthClass"
+      *ngFor="let currencyPair of commonHttpService.allCurrencyPairs"
+      [value]="currencyPair.name"
+    >
+      <ion-label class="fontClass">{{currencyPair.name}}</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- won or lost -->
+  <ion-item lines="none">
+    <ion-label class="ion-text-wrap">
+      <ion-label id="filterbyID"> -Won-Lose- </ion-label>
+    </ion-label>
+    <ion-button
+      class="fontClass"
+      fill="outline"
+      slot="end"
+      (click)="onClickClear('wonLose')"
+      >Clear</ion-button
+    >
+  </ion-item>
+
+  <ion-segment
+    [value]="commonHttpService.selectedFilterData.selectedTradeResult"
+    (ionChange)="onSelectTradeResult($event)"
+    class="segmentButtonClass"
+    scrollable
+  >
+  <ion-segment-button value="won">
+    <ion-label class="fontClass">WON</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="loss">
+    <ion-label class="fontClass">LOSS</ion-label>
+  </ion-segment-button>
+  </ion-segment>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="end" class="fontClass" (click)="_onClickDismiss()"
+      >Close</ion-button
+    >
+  </ion-toolbar>
+</ion-footer>

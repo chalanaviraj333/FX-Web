@@ -3,12 +3,6 @@ export interface FibTrade {
   image: string;
   totalMomentumDuration: string;
   totalTradeDuration: string;
-  // totalTime: number;
-  // totalTimeHrsVariable: number;
-  // totalTimeMinVariable: number;
-  // tradeTime: number;
-  // tradeTimeHrsVariable: number;
-  // tradeTimeMinsVariable: number;
   highestCandle: number;
   totalCandle: number;
   result: string;

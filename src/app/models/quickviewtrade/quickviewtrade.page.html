@@ -1,0 +1,86 @@
+<ion-buttons slot="start">
+  <ion-button class="closeButtonClass" (click)="_onClickDismiss()">
+    <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+  </ion-button>
+</ion-buttons>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" id="imageColID" class="ion-text-center">
+        <img id="remoteImageID" src="{{this.commonHttpService.selectedTrade.image}}" height="400" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size-xs="12" size-sm="12" size-md="5" size-lg="5" class="ion-padding-start">
+        <ion-label class="fontClass" position="stacked">Candle Momentum</ion-label>
+        <ion-progress-bar [color]="this.commonHttpService.selectedTrade.tradeDirection" [value]="this.commonHttpService.selectedTrade.highestCandle/this.commonHttpService.selectedTrade.totalCandle"></ion-progress-bar>
+      <ion-item lines="none">
+        <ion-label class="fontClass candleData ion-text-start">Highest: {{this.commonHttpService.selectedTrade.highestCandle}}</ion-label>
+        <ion-label class="fontClass candleData ion-text-end">Total: {{this.commonHttpService.selectedTrade.totalCandle}}</ion-label>
+      </ion-item>
+    </ion-col>
+    <ion-col size-xs="12" size-sm="12" size-md="5" size-lg="5" class="ion-padding-start">
+      <ion-label class="fontClass" position="stacked">Momentum Time</ion-label>
+      <ion-progress-bar color="dark" [value]="(this.commonHttpService.selectedTrade.starttoZeroHit.getTime() - this.commonHttpService.selectedTrade.momentStartDateTime.getTime())/(this.commonHttpService.selectedTrade.tradeFinishedDateTime.getTime() - this.commonHttpService.selectedTrade.momentStartDateTime.getTime())"></ion-progress-bar>
+    <ion-item lines="none">
+      <ion-label class="fontClass candleData ion-text-start">{{this.commonHttpService.selectedTrade.starttoZeroHitDuration}}
+      </ion-label>
+      <ion-label class="fontClass candleData ion-text-end">{{this.commonHttpService.selectedTrade.totalMomentumDuration}}
+      </ion-label>
+    </ion-item>
+  </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size-xs="12" size-sm="12" size-md="5" size-lg="5" class="ion-padding-start">
+      <ion-label class="fontClass" position="stacked">Trade Time</ion-label>
+      <ion-progress-bar [color]="this.commonHttpService.selectedTrade.result" [value]="(this.commonHttpService.selectedTrade.tradeFinishedDateTime.getTime() - this.commonHttpService.selectedTrade.tradeStartDateTime.getTime())/(this.commonHttpService.selectedTrade.tradeFinishedDateTime.getTime() - this.commonHttpService.selectedTrade.momentStartDateTime.getTime())" reversed></ion-progress-bar>
+    <ion-item lines="none">
+      <ion-label class="fontClass candleData ion-text-start">{{this.commonHttpService.selectedTrade.totalMomentumDuration}}
+      </ion-label>
+      <ion-label class="fontClass candleData ion-text-end">
+        {{this.commonHttpService.selectedTrade.totalTradeDuration}}
+      </ion-label>
+    </ion-item>
+  </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size-xs="12" size-sm="12" size-md="6" size-lg="6" class="ion-no-margin">
+      <ion-card>
+        <ion-card-header class="fontClass boldTextClass">Candle Momentum</ion-card-header>
+        <ion-card-content>
+          <ion-label class="fontClass">Date: {{this.commonHttpService.selectedTrade.momentStartDateTime.toLocaleDateString('en-US', fullLengthDate)}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Time: {{this.commonHttpService.selectedTrade.momentStartDateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}}</ion-label>
+          <br>
+          <ion-label class="fontClass">News: {{this.commonHttpService.selectedTrade.news}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Comments: {{this.commonHttpService.selectedTrade.comments}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+    <ion-col size-xs="12" size-sm="12" size-md="6" size-lg="6" class="ion-no-margin">
+      <ion-card>
+        <ion-card-header class="fontClass boldTextClass">Trade Details</ion-card-header>
+        <ion-card-content>
+          <ion-label class="fontClass">Trade Gain: {{this.commonHttpService.selectedTrade.gain}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Date: {{this.commonHttpService.selectedTrade.tradeStartDateTime.toLocaleDateString('en-US', fullLengthDate)}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Time: {{this.commonHttpService.selectedTrade.tradeStartDateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Week: {{this.commonHttpService.selectedTrade.week}}</ion-label>
+          <br>
+          <ion-label class="fontClass">Time Frame: {{this.commonHttpService.selectedTrade.timeFrame}}</ion-label>
+        </ion-card-content>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button slot="end" class="fontClass" (click)="_onClickDismiss()">Close</ion-button>
+  </ion-toolbar>
+</ion-footer>

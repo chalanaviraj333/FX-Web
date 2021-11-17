@@ -17,11 +17,17 @@
         <ion-col size="2" offset="1">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Time Frame</ion-label>
-            <ion-select value=15 class="fontClass" type="number" okText="Okay" cancelText="Dismiss" ngModel name="timeFrame" required>
+            <ion-select value=15 class="fontClass" type="number" okText="Okay" cancelText="Dismiss" ngModel="15" name="timeFrame" required>
               <ion-select-option value=5>5 Min</ion-select-option>
               <ion-select-option value=15>15 Min</ion-select-option>
               <ion-select-option value=60>1 Hr</ion-select-option>
             </ion-select>
+          </ion-item>
+        </ion-col>
+        <ion-col size="3" offset="1">
+          <ion-item>
+            <ion-label class="fontClass" position="stacked">Month Week</ion-label>
+            <ion-input type="number" class="fontClass" ngModel name="monthWeek" required></ion-input>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -55,7 +61,7 @@
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Result in Trade</ion-label>
-            <ion-select value="won" type="text" okText="Okay" cancelText="Dismiss" ngModel name="resultinTrade" required>
+            <ion-select type="text" okText="Okay" cancelText="Dismiss" ngModel="won" name="resultinTrade" required>
               <ion-select-option value="won">WON</ion-select-option>
               <ion-select-option value="loss">LOSS</ion-select-option>
               <ion-select-option value="closed">CLOSED</ion-select-option>
@@ -74,7 +80,10 @@
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Trade Direction</ion-label>
-            <ion-input class="fontClass" type="text" ngModel name="tradeDirection" required></ion-input>
+            <ion-select type="text" okText="Okay" cancelText="Dismiss" ngModel="short" name="tradeDirection" required>
+              <ion-select-option value="short">Short</ion-select-option>
+              <ion-select-option value="long">Long</ion-select-option>
+            </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -83,19 +92,13 @@
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Moment Start Date/Time</ion-label>
-            <ion-datetime ngModel name="momentStartDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+            <ion-datetime ngModel name="momentStartDateTime" (ionChange)="_ionChangeMomentStart($event)" class="fontClass" minuteValues="0,15,30,45" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Start to 0 Hit</ion-label>
-            <ion-datetime class="fontClass" displayFormat="D MMM YYYY H:mm" min="2021" ngModel name="starttoZeroHit"></ion-datetime>
-          </ion-item>
-        </ion-col>
-        <ion-col size="3">
-          <ion-item>
-            <ion-label class="fontClass" position="stacked">Month Week</ion-label>
-            <ion-input type="number" class="fontClass" ngModel name="monthWeek" required></ion-input>
+            <ion-datetime class="fontClass" displayFormat="D MMM YYYY H:mm" minuteValues="0,15,30,45" ngModel name="starttoZeroHit" (ionChange)="_ionChangeStartTOZero($event)" [value]="this.selectedMomentStartDate"></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>
@@ -104,14 +107,14 @@
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Trade Start Date/Time</ion-label>
-            <ion-datetime ngModel name="tradeStartDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+            <ion-datetime ngModel name="tradeStartDateTime" [value]="this.selectedStartTOZeroDate" (ionChange)="_ionChangeTradeStart($event)" class="fontClass" minuteValues="0,15,30,45" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
           </ion-item>
         </ion-col>
 
         <ion-col size="3">
           <ion-item>
             <ion-label class="fontClass" position="stacked">Trade Finished Date/Time</ion-label>
-            <ion-datetime ngModel name="tradeFinishedDateTime" class="fontClass" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
+            <ion-datetime ngModel name="tradeFinishedDateTime" [value]="selectedTradeStartDate" class="fontClass" minuteValues="0,15,30,45" displayFormat="D MMM YYYY H:mm" required></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>

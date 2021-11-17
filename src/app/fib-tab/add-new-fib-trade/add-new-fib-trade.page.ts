@@ -13,13 +13,19 @@ import { CommonUploadServiceService } from 'src/app/services/common-upload-servi
 })
 export class AddNewFibTradePage implements OnInit {
 
-  public allCurrencyPairs: Array<string> = ['AUDCAD', 'AUDUSD', 'EURUSD', 'GBPUSD', 'USDCHF'];
   public filteredCurrencyPairs: Array<string> = [];
   public selectedCurrencyPair :string = '';
+
+  public selectedMomentStartDate: Date = new Date();
+  public selectedStartTOZeroDate: Date = new Date();
+  public selectedTradeStartDate: Date = new Date();
 
   constructor(public commonUploadService: CommonUploadServiceService, private actionSheetController: ActionSheetController, private toastController: ToastController, private commonHttpService: CommonHttpService) { }
 
   ngOnInit() {
+    if (this.commonHttpService.allCurrencyPairs.length == 0) {
+      this.commonHttpService.getAllCurrencyPairs();
+    }
   }
 
   _forexPairOnType(event) {
@@ -33,7 +39,11 @@ export class AddNewFibTradePage implements OnInit {
   }
 
   performcurrenctPairSearch(entervalue:string) {
-    this.filteredCurrencyPairs = this.allCurrencyPairs;
+    this.filteredCurrencyPairs = [];
+
+    this.commonHttpService.allCurrencyPairs.forEach(currencyPair => {
+      this.filteredCurrencyPairs.push(currencyPair.name);
+    });
 
     if (entervalue && entervalue.trim() != "")
     {
@@ -69,30 +79,45 @@ export class AddNewFibTradePage implements OnInit {
   }
 
   onSubmitNext(form: NgForm) {
+    let addedCurrencyPair: boolean = false;
+    let tradeGain: number = 0;
+
     if (this.commonUploadService.validentry == true) {
       this.presentToastAddUpload();
       return;
     }
 
-    const newTrade: FibTrade = {
+    if (form.value.resultinTrade == 'loss') {
+      tradeGain = -Math.abs(form.value.tradeGain);
+     }
+     else {
+      tradeGain = form.value.tradeGain;
+     }
+
+    const enteredCurrPair: string = form.value.forexPair.toUpperCase();
+    this.filteredCurrencyPairs.forEach(currentpair => {
+      if (currentpair == enteredCurrPair) {
+        addedCurrencyPair = true;
+      }
+    });
+
+    if (!addedCurrencyPair) {
+      this.commonHttpService.addNewCurrPair(enteredCurrPair);
+    }
+
+    let newTrade: FibTrade = {
       key: null,
       image: null,
       totalMomentumDuration: null,
       totalTradeDuration: null,
-      // totalTime: form.value.totalTimeHours*60 + form.value.totalTimeMinutes,
-      // totalTimeHrsVariable: form.value.totalTimeHours,
-      // totalTimeMinVariable: form.value.totalTimeMinutes,
-      // tradeTime: form.value.tradeTimeHours*60 + form.value.tradeTimeMinutes,
-      // tradeTimeHrsVariable: form.value.tradeTimeHours,
-      // tradeTimeMinsVariable: form.value.tradeTimeMinutes,
       highestCandle: form.value.highestCandleMovement,
       totalCandle: form.value.totalCandleMovement,
       result: form.value.resultinTrade,
       tradeType: 'fib-trade',
-      tradeDirection: form.value.tradeDirection.toLowerCase(),
+      tradeDirection: form.value.tradeDirection,
       comments: form.value.notes,
       news: form.value.news,
-      gain: form.value.tradeGain,
+      gain: tradeGain,
       momentStartDateTime: form.value.momentStartDateTime,
       tradeStartDateTime: form.value.tradeStartDateTime,
       tradeFinishedDateTime: form.value.tradeFinishedDateTime,
@@ -119,5 +144,17 @@ export class AddNewFibTradePage implements OnInit {
 
     onClickDatabaseChanges() {
       this.commonHttpService.databaseChanges();
+    }
+
+    _ionChangeMomentStart(event) {
+      this.selectedMomentStartDate = event.target.value;
+    }
+
+    _ionChangeStartTOZero(event) {
+      this.selectedStartTOZeroDate = event.target.value;
+    }
+
+    _ionChangeTradeStart(event) {
+      this.selectedTradeStartDate = event.target.value;
     }
 }

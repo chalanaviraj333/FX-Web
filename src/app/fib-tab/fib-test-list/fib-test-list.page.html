@@ -1,12 +1,16 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-title class="fontClass">Fibonacci Testimonial</ion-title>
+    <ion-button slot="end" class="fontClass" color="dark" (click)="onClickFilter()">
+      Filter
+      <ion-icon name="filter-circle-outline" class="ion-padding-left"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-card *ngFor="let fibTrade of commonHttpService.filteredFibTrades"
-    class="ion-activatable ripple-parent ion-no-margin">
+    class="ion-activatable ripple-parent">
       <ion-card-content>
         <ion-grid class="ion-no-padding">
           <ion-row class="ion-no-padding">
@@ -28,15 +32,15 @@
             </ion-item>
           </ion-col>
           <ion-col size-xs="12" size-sm="12" size-md="3" size-lg="3" class="ion-no-margin" offset-md="1" offset-lg="1">
-            <ion-label class="fontClass" position="stacked">Duration</ion-label>
-            <ion-progress-bar color="dark" [value]="(fibTrade.tradeFinishedDateTime.getTime() - fibTrade.tradeStartDateTime.getTime())/(fibTrade.tradeFinishedDateTime.getTime() - fibTrade.momentStartDateTime.getTime())"></ion-progress-bar>
+            <ion-label class="fontClass" position="stacked">Momentum Time</ion-label>
+            <ion-progress-bar color="dark" [value]="(fibTrade.starttoZeroHit.getTime() - fibTrade.momentStartDateTime.getTime())/(fibTrade.tradeFinishedDateTime.getTime() - fibTrade.momentStartDateTime.getTime())"></ion-progress-bar>
           <ion-item lines="none">
-            <ion-label class="fontClass candleData ion-text-start">
-              <ion-text>Trade: {{fibTrade.totalTradeDuration}}</ion-text>
-              <br>
-              <ion-text color="danger">{{fibTrade.starttoZeroHitDuration}}</ion-text>
+            <ion-label class="fontClass candleData ion-align-self-start">St-Zero: {{fibTrade.starttoZeroHitDuration}}
             </ion-label>
-            <ion-label class="fontClass candleData ion-text-end ion-align-self-start">Momentum: {{fibTrade.totalMomentumDuration}}</ion-label>
+            <ion-label class="fontClass candleData ion-text-end">
+              <ion-label class="fontClass candleData ion-text-end ion-align-self-start">Total: {{fibTrade.totalMomentumDuration}}</ion-label>
+            <ion-text color="danger">Trade: {{fibTrade.totalTradeDuration}}</ion-text>
+            </ion-label>
           </ion-item>
         </ion-col>
           </ion-row>
